@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "940051201618",
+    "firebase_url": "https://hackjaipur-7d582.firebaseio.com",
+    "project_id": "hackjaipur-7d582",
+    "storage_bucket": "hackjaipur-7d582.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:940051201618:android:59431f9ad0c0643c4ba98b",
+        "android_client_info": {
+          "package_name": "com.example.anywhere_hospital"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "940051201618-8gfejhfmq5p0v3tn2ngicq8mglp8b6rg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.anywhere_hospital",
+            "certificate_hash": "0b4ed6c90ff95c73a81a330e3f297962466ec201"
+          }
+        },
+        {
+          "client_id": "940051201618-dpo7hebj6m50dpql7fkmcl5a50mnsvjh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5TJmCiYKc4IEhoOC_dkCMysINIO4aXE8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "940051201618-dpo7hebj6m50dpql7fkmcl5a50mnsvjh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
