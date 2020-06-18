@@ -1,7 +1,11 @@
+import 'dart:js';
+
 import 'package:anywhere_hospital/authentication/loginPage.dart';
 import 'package:anywhere_hospital/authentication/signUpPage.dart';
 import 'package:anywhere_hospital/authentication/startScreen.dart';
 import 'package:anywhere_hospital/models/user.dart';
+import 'package:anywhere_hospital/pages/chatbot.dart';
+import 'package:anywhere_hospital/pages/doctorsList.dart';
 import 'package:anywhere_hospital/pages/home.dart';
 import 'package:anywhere_hospital/services/auth.dart';
 import 'package:anywhere_hospital/wrapper.dart';
@@ -17,6 +21,8 @@ class MyApp extends StatelessWidget {
     HomePage.tag : (context) => new HomePage(),
     LoginPage.tag : (context) => new LoginPage(),
     SignUpPage.tag : (context) => new SignUpPage(),
+    ChatbotPage.tag : (context) => new ChatbotPage(),
+    DoctorsListPage.tag : (context) => new DoctorsListPage(),
   };
   @override
   Widget build(BuildContext context) {

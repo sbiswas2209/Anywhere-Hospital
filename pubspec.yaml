@@ -26,6 +26,8 @@ dependencies:
   provider: ^4.1.3
   firebase_auth: ^0.16.1
   cloud_firestore: ^0.13.6
+  flutter_webview_plugin: ^0.3.11
+  google_nav_bar: ^2.2.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -51,6 +53,8 @@ flutter:
   assets:
     - assets/images/doctor.png
     - assets/images/patient.png
+    - assets/images/doctor_home.png
+    - assets/images/doctor_list.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

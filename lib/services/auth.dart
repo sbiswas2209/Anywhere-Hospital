@@ -9,11 +9,11 @@ class AuthService {
   User _userFromFirebase(FirebaseUser user){
     return user!=null ? User(uid: user.uid) : null;
   }
-  Future<dynamic> signUp(String name , String email , String password , bool isDoctor , String gender) async {
+  Future<dynamic> signUp(String name , String email , String password , bool isDoctor , String gender , DateTime birthday) async {
     try{
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       FirebaseUser user = result.user;
-      await new DatabaseService(uid: user.uid).setUserData(name, email, password, gender, isDoctor);
+      await new DatabaseService(uid: user.uid).setUserData(name, email, password, gender, isDoctor , birthday);
       return _userFromFirebase(user);
     }
     catch(e){
