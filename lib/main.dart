@@ -1,8 +1,5 @@
-import 'dart:js';
-
 import 'package:anywhere_hospital/authentication/loginPage.dart';
 import 'package:anywhere_hospital/authentication/signUpPage.dart';
-import 'package:anywhere_hospital/authentication/startScreen.dart';
 import 'package:anywhere_hospital/models/user.dart';
 import 'package:anywhere_hospital/pages/chatbot.dart';
 import 'package:anywhere_hospital/pages/doctorsList.dart';
