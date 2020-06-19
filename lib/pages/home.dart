@@ -1,6 +1,7 @@
 import 'package:anywhere_hospital/models/userData.dart';
 import 'package:anywhere_hospital/pages/chatbot.dart';
 import 'package:anywhere_hospital/pages/doctorsList.dart';
+import 'package:anywhere_hospital/pages/registerStore.dart';
 import 'package:anywhere_hospital/services/auth.dart';
 import 'package:anywhere_hospital/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -119,6 +120,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
+                  onTap: () => Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => new RegisterStorePage())),
                 ),
               ),
             ],
