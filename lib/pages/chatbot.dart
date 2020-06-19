@@ -11,7 +11,9 @@ class ChatbotPage extends StatelessWidget {
         ),
       ),
       body: Container(
-        child: WebviewScaffold(url: 'https://baymaxbot.netlify.app/',),
+        child: WebviewScaffold(url: 'https://baymaxbot.netlify.app/',
+          withZoom: true,
+        ),
       ),
     );
   }

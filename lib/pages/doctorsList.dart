@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 class DoctorsListPage extends StatefulWidget {
   static final String tag = 'doctors-list';
@@ -13,6 +14,35 @@ class _DoctorsListPageState extends State<DoctorsListPage> {
         title: Text('Doctors',
           style: Theme.of(context).textTheme.headline1,
         ),
+      ),
+      body: StreamBuilder(
+        stream: Firestore.instance.collection('users').where('isDoctor' , isEqualTo: true).snapshots(),
+        builder: (context , snapshot){
+          return !snapshot.hasData ? Center(child: CircularProgressIndicator()):
+          ListView.builder(
+              itemCount: snapshot.data.documents.length,
+              itemBuilder: (context, index) {
+                return Card(
+                  color: Theme.of(context).primaryColorDark,
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: Theme.of(context).primaryColorLight,
+                      child: Image.asset(
+                      'assets/images/doctor.png',
+                    )),
+                    trailing: Icon(Icons.arrow_right , color: Theme.of(context).primaryColor),
+                    title: Text('Dr. ${snapshot.data.documents[index]['name']}',
+                      style: Theme.of(context).textTheme.headline1.copyWith(color: Colors.white),
+                    ),
+                    subtitle: Text('${snapshot.data.documents[index]['type']}',
+                      style: Theme.of(context).textTheme.bodyText1.copyWith(color: Colors.white),
+                    ),
+                    contentPadding: EdgeInsets.all(8.0),
+                  ),
+                );
+              },
+            );
+        },
       ),
     );
   }

@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                           fit: BoxFit.fill,
                           height: 130.0,
                         ),
-                        Text('Check out \nour \nfull \narsenal',
+                        Text('Check out \nour full \narsenal',
                           style: Theme.of(context).textTheme.headline1.copyWith(color: Colors.white , fontSize: 30.0),
                         ),
                         Icon(
@@ -97,6 +97,28 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   onTap: () => Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => new DoctorsListPage())),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: GestureDetector(
+                                child: Card(
+                    color: Theme.of(context).primaryColorLight,
+                    child: Row(
+                      children: <Widget>[
+                        Image.asset(
+                          'assets/images/store.png',
+                          fit: BoxFit.fill,
+                          height: 150.0,
+                        ),
+                        Text('Register your\nstore with us',
+                          style: Theme.of(context).textTheme.headline1.copyWith(color: Colors.white , fontSize: 30.0),
+                        ),
+                        SizedBox(width: 20.0),
+                        Icon(Icons.arrow_right , color: Colors.white, size: 25.0,)
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ],
