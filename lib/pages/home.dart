@@ -120,7 +120,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
-                  onTap: () => Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => new RegisterStorePage())),
+                  onTap: () => Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => new RegisterStorePage(uid: widget.uid,))),
                 ),
               ),
             ],

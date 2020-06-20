@@ -1,8 +1,12 @@
+import 'package:anywhere_hospital/models/item.dart';
+import 'package:anywhere_hospital/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 class RegisterStorePage extends StatefulWidget {
   static final String tag = 'register-store-page';
+  final String uid;
+  RegisterStorePage({this.uid});
   @override
   _RegisterStorePageState createState() => _RegisterStorePageState();
 }
@@ -14,10 +18,19 @@ class _RegisterStorePageState extends State<RegisterStorePage> {
   String _ownerName = '';
   Position position;
   LatLng _center;
+  LatLng _lastPosition;
+  Set<Marker> _marker = {};
+  List<Item> _stock = [];
+  String _itemName = "";
+  int _itemCount = 0;
   final _formKey = GlobalKey<FormState>();
 
   void _onMapCreated(GoogleMapController controller){
     _mapController = controller;
+  }
+
+  void _onCameraMove(CameraPosition position){
+    _lastPosition = position.target;
   }
 
   Future<void> _showNullDialog(BuildContext context){
@@ -71,6 +84,18 @@ class _RegisterStorePageState extends State<RegisterStorePage> {
       });
       setState(() {
         _center = new LatLng(position.latitude , position.longitude);
+        _lastPosition = _center;
+      });
+      setState(() {
+        _marker.clear();
+        _marker.add(Marker(
+        markerId: MarkerId(_lastPosition.toString()),
+        position: _center,
+        infoWindow: InfoWindow(
+          title: 'Your Store'
+         ),
+         icon: BitmapDescriptor.defaultMarker,
+         ));
       });
       setState(() {
         _loading = false;
@@ -81,7 +106,7 @@ class _RegisterStorePageState extends State<RegisterStorePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Rgister your store',
+        title: Text('Register your store',
           style: Theme.of(context).textTheme.headline1,
         ),
       ),
@@ -94,6 +119,7 @@ class _RegisterStorePageState extends State<RegisterStorePage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
+                textCapitalization: TextCapitalization.words,
                 style: Theme.of(context).textTheme.bodyText2,
                 decoration: InputDecoration(
                   labelText: 'Store name',
@@ -119,6 +145,7 @@ class _RegisterStorePageState extends State<RegisterStorePage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
+                textCapitalization: TextCapitalization.words,
                 style: Theme.of(context).textTheme.bodyText2,
                 decoration: InputDecoration(
                   labelText: 'Owner name',
@@ -141,29 +168,182 @@ class _RegisterStorePageState extends State<RegisterStorePage> {
                 },
               ),
             ),
-            ClipRRect(
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Text('Set Location of store',
+                  style: Theme.of(context).textTheme.headline1,
+                ),
+              ),
+            ),
+            _center != null ? ClipRRect(
               borderRadius: BorderRadius.circular(20.0),
                           child: Container(
                 constraints: BoxConstraints(
                   maxWidth: (MediaQuery.of(context).size.width),
-                  maxHeight: (MediaQuery.of(context).size.height),
+                  maxHeight: 400,
                 ),
-                child: GoogleMap(
-                  onMapCreated: _onMapCreated,
-                  initialCameraPosition: CameraPosition(
-                    target: _center != null ? _center : const LatLng(45.521563, -122.677433),
-                    zoom: 11.0,
-                  ),
+                child:Stack(
+                  children: <Widget>[
+                    GoogleMap(
+                      onMapCreated: _onMapCreated,
+                      onCameraMove: _onCameraMove,
+                      markers: _marker,
+                      myLocationEnabled: true,
+                      myLocationButtonEnabled: true,
+                      initialCameraPosition: CameraPosition(
+                        target:  _center,
+                        zoom: 11.0,
+                      ),
+                      onTap: (argument) {
+                        setState(() {
+                          _marker.clear();
+                          _marker.add(Marker(
+                            markerId: MarkerId(_lastPosition.toString()),
+                            position: argument,
+                            infoWindow: InfoWindow(
+                              title: 'Your Store'
+                            ),
+                            icon: BitmapDescriptor.defaultMarker,
+                          ));
+                        });
+                      },
+                    ),
+                    FloatingActionButton(
+                      onPressed: (){
+                        setState(() {
+                          _marker.clear();
+                          _marker.add(Marker(
+                            markerId: MarkerId(_lastPosition.toString()),
+                            position: _lastPosition,
+                            infoWindow: InfoWindow(
+                              title: 'Your Store'
+                            ),
+                            icon: BitmapDescriptor.defaultMarker,
+                          ));
+                        });
+                      },
+                      child: Icon(Icons.pin_drop),
+                      mini: true,
+                    )
+                  ],
                 ),
               ),
+            ): SizedBox(),
+            Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    textCapitalization: TextCapitalization.words,
+                    style: Theme.of(context).textTheme.bodyText2,
+                    decoration: InputDecoration(
+                      labelText: 'Item name',
+                      prefixIcon: Icon(Icons.add , color: Theme.of(context).primaryColorLight,),
+                      floatingLabelBehavior: FloatingLabelBehavior.auto,
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                        borderSide: BorderSide(color: Theme.of(context).primaryColorLight , width: 5.0),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                        borderSide: BorderSide(color: Theme.of(context).primaryColorDark , width: 5.0)
+                      ),
+                      labelStyle: Theme.of(context).textTheme.headline1,
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        _itemName = value;
+                      });
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    textCapitalization: TextCapitalization.words,
+                    style: Theme.of(context).textTheme.bodyText2,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      labelText: 'Item number',
+                      prefixIcon: Icon(Icons.add , color: Theme.of(context).primaryColorLight,),
+                      floatingLabelBehavior: FloatingLabelBehavior.auto,
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                        borderSide: BorderSide(color: Theme.of(context).primaryColorLight , width: 5.0),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                        borderSide: BorderSide(color: Theme.of(context).primaryColorDark , width: 5.0)
+                      ),
+                      labelStyle: Theme.of(context).textTheme.headline1,
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        _itemCount = int.parse(value);
+                      });
+                    },
+                  ),
+                ),
+                FlatButton.icon(
+                  onPressed: (){
+                    if(_itemName != "" || _itemCount != 0){
+                      Item temp = new Item(name: _itemName , stock: _itemCount);
+                      setState(() {
+                        _stock.add(temp);
+                      });
+                    }
+                    else{
+                      _showNullDialog(context);
+                    }
+                  }, 
+                  icon: Icon(Icons.add , color: Theme.of(context).primaryColorDark), 
+                  label: Text('ADD',
+                    style: Theme.of(context).textTheme.bodyText2,
+                  )
+                )
+              ],
             ),
+            _stock.isEmpty == false ? 
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: _stock.length,
+                  itemBuilder: (context , index){
+                    return Card(
+                      color: Theme.of(context).primaryColorDark,
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          child: Image(image: AssetImage('assets/images/pill.png')),
+                        ),
+                        title: Text('${_stock[index].name}',
+                          style: Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.white),
+                        ),
+                        subtitle: Text('${_stock[index].stock}',
+                          style: Theme.of(context).textTheme.bodyText1.copyWith(color: Colors.white),
+                        ),
+                        trailing: FlatButton(
+                          onPressed: (){
+                            setState(() {
+                              _stock.remove(_stock[index]);
+                            });
+                          }, 
+                          child: Icon(Icons.delete , color: Colors.white,)
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ):SizedBox(),
             Padding(
               padding: const EdgeInsets.fromLTRB(80.0 , 8.0 , 80.0 , 8.0),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(30.0),
                             child: RaisedButton.icon(
                   onPressed: () async {
-                     if(_storeName == '' || _ownerName == ''){
+                     if(_storeName == '' || _ownerName == '' || _stock.isEmpty == true){
                   _showNullDialog(context);
                 }
                 else{
@@ -171,15 +351,16 @@ class _RegisterStorePageState extends State<RegisterStorePage> {
                     setState(() {
                       _loading = true;
                     });
-                    
+                    new DatabaseService(uid: widget.uid).setStoreData(_storeName, _ownerName, _lastPosition , _stock);
                     setState(() {
                       _loading = false;
                     });
+                    Navigator.pop(context);
                   }
                   catch(e){
                     _showErrorDialog(context);
                   }
-                }
+                  }
                   },
                   color: Theme.of(context).primaryColorLight,
                   icon: Icon(Icons.keyboard_arrow_right , color: Theme.of(context).primaryColorDark,),
