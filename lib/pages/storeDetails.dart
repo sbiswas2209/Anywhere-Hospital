@@ -1,19 +1,39 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-class StoreDetailsPage extends StatelessWidget {
+class StoreDetailsPage extends StatefulWidget {
   static final String tag = 'store-details-page';
   final DocumentSnapshot data;
   StoreDetailsPage({this.data});
+
+  @override
+  _StoreDetailsPageState createState() => _StoreDetailsPageState();
+}
+
+class _StoreDetailsPageState extends State<StoreDetailsPage> {
   GoogleMapController _mapController;
+
+  Set<Marker> _marker = {};
+
   void _onMapCreated(GoogleMapController controller){
     _mapController = controller;
+  }
+  @override
+  void initState(){
+    super.initState();
+    setState(() {
+      _marker.add(Marker(
+        markerId: MarkerId(widget.data['storeName']),
+        position: LatLng(widget.data['position'].latitude , widget.data['position'].longitude),
+        icon: BitmapDescriptor.defaultMarker,
+      ));
+    });
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${data['storeName']} Details',
+        title: Text('${widget.data['storeName']} Details',
           style: Theme.of(context).textTheme.headline1,
         ),
       ),
@@ -29,7 +49,7 @@ class StoreDetailsPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
-              child: Text('${data['storeName']}',
+              child: Text('${widget.data['storeName']}',
                 style: Theme.of(context).textTheme.headline1,
               ),
             ),
@@ -53,12 +73,15 @@ class StoreDetailsPage extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(30.0),
                       child: Container(
+                        height: 400,
+                        width: MediaQuery.of(context).size.width,
               child: GoogleMap(
                 onMapCreated: _onMapCreated,
                 myLocationButtonEnabled: true,
                 myLocationEnabled: true,
+                markers: _marker,
                 initialCameraPosition: CameraPosition(
-                  target: LatLng(data['position'].latitude , data['position'].longitude),
+                  target: LatLng(widget.data['position'].latitude , widget.data['position'].longitude),
                   zoom: 11.0,
                 ),
               ),

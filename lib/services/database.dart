@@ -20,13 +20,14 @@ class DatabaseService{
       'ownStatus' : false,
     });
   }
-  Future setStoreData(String storeName , String ownerName , LatLng position , List<Item> stock) async {
+  Future setStoreData(String storeName , String ownerName , LatLng position , List<Item> stock , String phoneNumber) async {
     Map _stockMap = Map.fromIterable(stock , key: (value) => value.name , value: (value) => value.stock);
     await storeData.document().setData({
       'storeName' : storeName,
       'ownerName' : ownerName,
       'position' : GeoPoint(position.latitude, position.longitude),
       'stock' : _stockMap,
+      'phone' : phoneNumber,
     });
     await userData.document(uid).updateData({
       'ownStatus' : true,

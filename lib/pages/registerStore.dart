@@ -19,10 +19,11 @@ class _RegisterStorePageState extends State<RegisterStorePage> {
   Position position;
   LatLng _center;
   LatLng _lastPosition;
+  String _phoneNumber = '';
   Set<Marker> _marker = {};
   List<Item> _stock = [];
-  String _itemName = "";
-  int _itemCount = 0;
+  String _itemName = null;
+  int _itemCount = null;
   final _formKey = GlobalKey<FormState>();
 
   void _onMapCreated(GoogleMapController controller){
@@ -170,6 +171,32 @@ class _RegisterStorePageState extends State<RegisterStorePage> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                keyboardType: TextInputType.phone,
+                style: Theme.of(context).textTheme.bodyText2,
+                decoration: InputDecoration(
+                  labelText: 'Contact Number',
+                  prefixIcon: Icon(Icons.phone , color: Theme.of(context).primaryColorLight,),
+                  floatingLabelBehavior: FloatingLabelBehavior.auto,
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                    borderSide: BorderSide(color: Theme.of(context).primaryColorLight , width: 5.0),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                    borderSide: BorderSide(color: Theme.of(context).primaryColorDark , width: 5.0)
+                  ),
+                  labelStyle: Theme.of(context).textTheme.headline1,
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    _phoneNumber = value;
+                  });
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Center(
                 child: Text('Set Location of store',
                   style: Theme.of(context).textTheme.headline1,
@@ -206,6 +233,7 @@ class _RegisterStorePageState extends State<RegisterStorePage> {
                             ),
                             icon: BitmapDescriptor.defaultMarker,
                           ));
+                          _lastPosition = argument;
                         });
                       },
                     ),
@@ -287,10 +315,12 @@ class _RegisterStorePageState extends State<RegisterStorePage> {
                 ),
                 FlatButton.icon(
                   onPressed: (){
-                    if(_itemName != "" || _itemCount != 0){
+                    if(_itemName != null || _itemCount != null){
                       Item temp = new Item(name: _itemName , stock: _itemCount);
                       setState(() {
+                        _itemName = null;
                         _stock.add(temp);
+                        _itemCount = null;
                       });
                     }
                     else{
@@ -343,7 +373,7 @@ class _RegisterStorePageState extends State<RegisterStorePage> {
                 borderRadius: BorderRadius.circular(30.0),
                             child: RaisedButton.icon(
                   onPressed: () async {
-                     if(_storeName == '' || _ownerName == '' || _stock.isEmpty == true){
+                     if(_storeName == '' || _ownerName == '' || _stock.isEmpty == true || _phoneNumber == ''){
                   _showNullDialog(context);
                 }
                 else{
@@ -351,7 +381,7 @@ class _RegisterStorePageState extends State<RegisterStorePage> {
                     setState(() {
                       _loading = true;
                     });
-                    new DatabaseService(uid: widget.uid).setStoreData(_storeName, _ownerName, _lastPosition , _stock);
+                    new DatabaseService(uid: widget.uid).setStoreData(_storeName, _ownerName, _lastPosition , _stock , _phoneNumber);
                     setState(() {
                       _loading = false;
                     });
