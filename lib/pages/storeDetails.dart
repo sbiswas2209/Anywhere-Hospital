@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 class StoreDetailsPage extends StatefulWidget {
   static final String tag = 'store-details-page';
   final DocumentSnapshot data;
@@ -11,9 +12,33 @@ class StoreDetailsPage extends StatefulWidget {
 }
 
 class _StoreDetailsPageState extends State<StoreDetailsPage> {
+
   GoogleMapController _mapController;
 
   Set<Marker> _marker = {};
+
+  bool _loading;
+
+  Future<void> _showErrorDialog(BuildContext context){
+    return showDialog(
+      context: context,
+      barrierDismissible: true,
+      child: AlertDialog(
+          title: Text('Some error occured',
+            style: Theme.of(context).textTheme.headline1.copyWith(color: Colors.blue[900]),
+          ),
+          content: Text('Please retry later.',
+            style: Theme.of(context).textTheme.bodyText1.copyWith(color : Colors.blue[900]),
+          ),
+          actions: <Widget>[
+            FlatButton(
+      onPressed: () => Navigator.pop(context), 
+      child: Text('OK'),
+            )
+          ],
+        ),
+    );
+  }
 
   void _onMapCreated(GoogleMapController controller){
     _mapController = controller;
@@ -65,8 +90,19 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
-              child: Text('${widget.data['phone']}',
-                style: Theme.of(context).textTheme.bodyText1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text('${widget.data['phone']}',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                  FlatButton(
+                    child: Icon(Icons.phone , color: Theme.of(context).primaryColorDark,),
+                    onPressed: () {
+                      launch(('tel://${widget.data['phone']}'));
+                    },
+                  ),
+                ],
               ),
             ),
           ),
