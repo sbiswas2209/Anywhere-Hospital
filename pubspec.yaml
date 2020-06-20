@@ -60,6 +60,7 @@ flutter:
     - assets/images/doctor_list.png
     - assets/images/store.png
     - assets/images/pill.png
+    - assets/images/register_store.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

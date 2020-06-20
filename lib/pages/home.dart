@@ -2,6 +2,7 @@ import 'package:anywhere_hospital/models/userData.dart';
 import 'package:anywhere_hospital/pages/chatbot.dart';
 import 'package:anywhere_hospital/pages/doctorsList.dart';
 import 'package:anywhere_hospital/pages/registerStore.dart';
+import 'package:anywhere_hospital/pages/shopsList.dart';
 import 'package:anywhere_hospital/services/auth.dart';
 import 'package:anywhere_hospital/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,22 +19,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   UserData data;
   bool _loading = false;
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   DatabaseService database = new DatabaseService(uid: widget.uid);
-  //   setState(() {
-  //     _loading = true;
-  //   });
-  //   database.getUserData().then((value) {
-  //     setState(() {
-  //       data = value;
-  //     });
-  //   });
-  //   setState(() {
-  //     _loading = false;
-  //   });
-  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,7 +97,7 @@ class _HomePageState extends State<HomePage> {
                           fit: BoxFit.fill,
                           height: 150.0,
                         ),
-                        Text('Register your\nstore with us',
+                        Text('Check out all\nour\npharmacies',
                           style: Theme.of(context).textTheme.headline1.copyWith(color: Colors.white , fontSize: 30.0),
                         ),
                         SizedBox(width: 20.0),
@@ -120,7 +105,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
-                  onTap: () => Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => new RegisterStorePage(uid: widget.uid,))),
+                  onTap: () => Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => new ShopsListPage(uid: widget.uid,))),
                 ),
               ),
             ],

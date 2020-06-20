@@ -5,6 +5,8 @@ import 'package:anywhere_hospital/pages/chatbot.dart';
 import 'package:anywhere_hospital/pages/doctorsList.dart';
 import 'package:anywhere_hospital/pages/home.dart';
 import 'package:anywhere_hospital/pages/registerStore.dart';
+import 'package:anywhere_hospital/pages/shopsList.dart';
+import 'package:anywhere_hospital/pages/storeDetails.dart';
 import 'package:anywhere_hospital/services/auth.dart';
 import 'package:anywhere_hospital/wrapper.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +24,8 @@ class MyApp extends StatelessWidget {
     ChatbotPage.tag : (context) => new ChatbotPage(),
     DoctorsListPage.tag : (context) => new DoctorsListPage(),
     RegisterStorePage.tag : (context) => new RegisterStorePage(),
+    ShopsListPage.tag : (context) => new ShopsListPage(),
+    StoreDetailsPage.tag : (context) => new StoreDetailsPage(),
   };
   @override
   Widget build(BuildContext context) {
