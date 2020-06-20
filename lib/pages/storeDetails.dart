@@ -65,6 +65,14 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
+              child: Text('${widget.data['phone']}',
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
               child: Text('Loaction',
                 style: Theme.of(context).textTheme.headline1,
               ),
