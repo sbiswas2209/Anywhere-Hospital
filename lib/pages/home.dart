@@ -3,6 +3,7 @@ import 'package:anywhere_hospital/pages/chatbot.dart';
 import 'package:anywhere_hospital/pages/doctorsList.dart';
 import 'package:anywhere_hospital/pages/registerStore.dart';
 import 'package:anywhere_hospital/pages/shopsList.dart';
+import 'package:anywhere_hospital/pages/statistics.dart';
 import 'package:anywhere_hospital/services/auth.dart';
 import 'package:anywhere_hospital/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -108,18 +109,45 @@ class _HomePageState extends State<HomePage> {
                   onTap: () => Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => new ShopsListPage(uid: widget.uid,))),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: GestureDetector(
+                                  child: Card(
+                    color: Theme.of(context).primaryColorDark,
+                    child: Row(
+                      children: <Widget>[
+                        Image.asset(
+                          'assets/images/statistics.png',
+                          fit: BoxFit.fill,
+                          height: 130.0,
+                        ),
+                        Text('Check\nIndia\'s\nStatistics',
+                          style: Theme.of(context).textTheme.headline1.copyWith(color: Colors.white , fontSize: 30.0),
+                        ),
+                        Icon(
+                          Icons.arrow_right,
+                          size: 25.0,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ),
+                  onTap: () => Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => new StatisticsPage())),
+                ),
+              ),
             ],
           );
         },
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => new ChatbotPage())),
-        backgroundColor: Theme.of(context).primaryColorLight,
-        label: Text('Chatbot',
-          style: Theme.of(context).textTheme.bodyText1.copyWith(color: Theme.of(context).primaryColorDark),
-        ),
-        icon: Icon(Icons.chat_bubble , color: Theme.of(context).primaryColorDark,),
-      ),
+      floatingActionButton:FloatingActionButton.extended(
+            onPressed: () => Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => new ChatbotPage())),
+            backgroundColor: Theme.of(context).primaryColorLight,
+            label: Text('Chatbot',
+              style: Theme.of(context).textTheme.bodyText1.copyWith(color: Theme.of(context).primaryColorDark),
+            ),
+            icon: Icon(Icons.chat_bubble , color: Theme.of(context).primaryColorDark,),
+          ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

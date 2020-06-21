@@ -372,7 +372,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     });
                   }
                   catch(e){
-                    _showErrorDialog(context);
+                    print(e);
                   }
                 }
                   },

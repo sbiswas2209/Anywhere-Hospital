@@ -55,14 +55,16 @@ class _MapPageState extends State<MapPage> {
         ),
       ),
       body: _loading ? LinearProgressIndicator() :
-      GoogleMap(
-        onMapCreated: _onMapCreated,
-        markers: _markers,
-        myLocationButtonEnabled: true,
-        myLocationEnabled: true,
-        initialCameraPosition: CameraPosition(
-          target: _center,
-          zoom: 11.0,
+      Container(
+        child: GoogleMap(
+          onMapCreated: _onMapCreated,
+          markers: _markers,
+          myLocationButtonEnabled: true,
+          myLocationEnabled: true,
+          initialCameraPosition: CameraPosition(
+            target: _center,
+            zoom: 11.0,
+          ),
         ),
       ),
     );

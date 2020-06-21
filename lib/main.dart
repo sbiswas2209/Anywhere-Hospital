@@ -6,6 +6,7 @@ import 'package:anywhere_hospital/pages/doctorsList.dart';
 import 'package:anywhere_hospital/pages/home.dart';
 import 'package:anywhere_hospital/pages/registerStore.dart';
 import 'package:anywhere_hospital/pages/shopsList.dart';
+import 'package:anywhere_hospital/pages/statistics.dart';
 import 'package:anywhere_hospital/pages/storeDetails.dart';
 import 'package:anywhere_hospital/services/auth.dart';
 import 'package:anywhere_hospital/pages/map.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
     ShopsListPage.tag : (context) => new ShopsListPage(),
     StoreDetailsPage.tag : (context) => new StoreDetailsPage(),
     MapPage.tag : (context) => new MapPage(),
+    StatisticsPage.tag : (context) => new StatisticsPage(),
   };
   @override
   Widget build(BuildContext context) {
