@@ -2,7 +2,6 @@ import 'package:anywhere_hospital/models/item.dart';
 import 'package:anywhere_hospital/models/userData.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class DatabaseService {
   final String uid;

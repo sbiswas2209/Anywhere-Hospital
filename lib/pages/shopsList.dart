@@ -1,11 +1,35 @@
 import 'package:anywhere_hospital/pages/registerStore.dart';
 import 'package:anywhere_hospital/pages/storeDetails.dart';
+import 'package:anywhere_hospital/pages/map.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-class ShopsListPage extends StatelessWidget {
+class ShopsListPage extends StatefulWidget {
   static final String tag = '';
   final String uid;
   ShopsListPage({this.uid});
+
+  @override
+  _ShopsListPageState createState() => _ShopsListPageState();
+}
+
+class _ShopsListPageState extends State<ShopsListPage> {
+  List<DocumentSnapshot> data;
+  bool _loaded = false;
+  @override
+  void initState(){
+    super.initState();
+    Firestore.instance.collection('stores').getDocuments().then((value){
+      setState(() {
+        _loaded = false;
+      });
+      setState(() {
+        data = value.documents;
+      });
+      setState(() {
+        _loaded = true;
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,6 +37,12 @@ class ShopsListPage extends StatelessWidget {
         title: Text('Pharmacies',
           style: Theme.of(context).textTheme.headline1,
         ),
+        actions: <Widget>[
+          _loaded ? FlatButton(
+            child: Icon(Icons.map , color: Theme.of(context).primaryColorDark,),
+            onPressed: () => Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => new MapPage(data: data))),
+          ):SizedBox(),
+        ],
       ),
       body: ListView(
         children: <Widget>[
@@ -34,7 +64,7 @@ class ShopsListPage extends StatelessWidget {
                   ],
                 ),
               ),
-              onTap: () => Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => new RegisterStorePage(uid: this.uid))),
+              onTap: () => Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => new RegisterStorePage(uid: this.widget.uid))),
             ),
           ),
           StreamBuilder(
