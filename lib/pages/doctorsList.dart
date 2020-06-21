@@ -56,13 +56,13 @@ class _DoctorsListPageState extends State<DoctorsListPage> {
                               .headline1
                               .copyWith(color: Colors.white),
                         ),
-                        subtitle: Text(
-                          '${snapshot.data.documents[index]['type']}',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText1
-                              .copyWith(color: Colors.white),
-                        ),
+                        // subtitle: Text(
+                        //   '${snapshot.data.documents[index]['type']}',
+                        //   style: Theme.of(context)
+                        //       .textTheme
+                        //       .bodyText1
+                        //       .copyWith(color: Colors.white),
+                        // ),
                         contentPadding: EdgeInsets.all(8.0),
                       ),
                     );

@@ -91,7 +91,7 @@ class _SignUpPageState extends State<SignUpPage> {
         key: _formKey,
         child: ListView(
           children: <Widget>[
-            _loading ? CircularProgressIndicator(backgroundColor: Colors.black,):SizedBox(),
+            _loading ? LinearProgressIndicator(backgroundColor: Colors.black,):SizedBox(),
             SizedBox(height:50),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -362,18 +362,10 @@ class _SignUpPageState extends State<SignUpPage> {
                   _showPasswordMismatchDialog(context);
                 }
                 else{
-                  try{
                     setState(() {
                       _loading = true;
                     });
                     await new AuthService().signUp(_name, _email, _password, _isDoctor, gender, birthday);
-                    setState(() {
-                      _loading = false;
-                    });
-                  }
-                  catch(e){
-                    print(e);
-                  }
                 }
                   },
                   color: Theme.of(context).primaryColorLight,
