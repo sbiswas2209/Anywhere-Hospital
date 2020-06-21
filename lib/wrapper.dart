@@ -11,7 +11,7 @@ class Wrapper extends StatelessWidget {
       return StartScreen();
     }
     else{
-      return HomePage();
+      return HomePage(uid: user.uid,);
     }
   }
 }

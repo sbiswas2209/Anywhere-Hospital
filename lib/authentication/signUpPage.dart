@@ -16,6 +16,8 @@ class _SignUpPageState extends State<SignUpPage> {
   String _name = '';
   String _confirmPassword = '';
   String gender = 'I do not want to say';
+  DateTime birthday = DateTime.now();
+  String type = 'General Physician';
   final _formKey = GlobalKey<FormState>();
   Future<void> _showNullDialog(BuildContext context){
     return showDialog(
@@ -109,7 +111,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     borderRadius: BorderRadius.circular(30.0),
                     borderSide: BorderSide(color: Theme.of(context).primaryColorDark , width: 5.0)
                   ),
-                  labelStyle: Theme.of(context).textTheme.headline1,
+                  labelStyle: Theme.of(context).textTheme.bodyText2,
                 ),
                 onChanged: (value) {
                   setState(() {
@@ -135,7 +137,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     borderRadius: BorderRadius.circular(30.0),
                     borderSide: BorderSide(color: Theme.of(context).primaryColorDark , width: 5.0)
                   ),
-                  labelStyle: Theme.of(context).textTheme.headline1,
+                  labelStyle: Theme.of(context).textTheme.bodyText2,
                 ),
                 onChanged: (value) {
                   setState(() {
@@ -161,7 +163,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     borderRadius: BorderRadius.circular(30.0),
                     borderSide: BorderSide(color: Theme.of(context).primaryColorDark , width: 5.0)
                   ),
-                  labelStyle: Theme.of(context).textTheme.headline1,
+                  labelStyle: Theme.of(context).textTheme.bodyText2,
                 ),
                 onChanged: (value) {
                   setState(() {
@@ -187,13 +189,41 @@ class _SignUpPageState extends State<SignUpPage> {
                     borderRadius: BorderRadius.circular(30.0),
                     borderSide: BorderSide(color: Theme.of(context).primaryColorDark , width: 5.0)
                   ),
-                  labelStyle: Theme.of(context).textTheme.headline1,
+                  labelStyle: Theme.of(context).textTheme.bodyText2,
                 ),
                 onChanged: (value) {
                   setState(() {
                     _confirmPassword = value;
                   });
                 },
+              ),
+            ),
+            Center(
+              child: Text('I was born on',
+                style: Theme.of(context).textTheme.headline1.copyWith(color: Colors.blue[900]),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(120, 8.0, 120.0, 8.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(30.0),
+                              child: RaisedButton.icon(
+                  color: Theme.of(context).primaryColorLight,
+                  icon: Icon(Icons.cake),
+                  label: Text('${birthday.toString().substring(0,10)}'),
+                  onPressed: (){
+                    return showDatePicker(
+                      context: context, 
+                      initialDate: birthday, 
+                      firstDate: DateTime(1900), 
+                      lastDate: DateTime.now(),
+                    ).then((value) {
+                      setState(() {
+                        birthday = value!=null ? value : birthday;
+                      });
+                    });
+                  },
+                ),
               ),
             ),
             Center(
@@ -281,6 +311,44 @@ class _SignUpPageState extends State<SignUpPage> {
         }).toList(),
        ),
             ),
+            AnimatedCrossFade(
+              firstChild: SizedBox(), 
+              secondChild: Column(
+              children: <Widget>[
+                Center(
+                  child: Text('I am a '),
+                ),
+                Padding(
+              padding: const EdgeInsets.fromLTRB(120.0 , 8.0 , 120.0 , 8.0),
+              child: DropdownButton<String>(
+                value: type,
+                icon: Icon(Icons.arrow_downward),
+                iconSize: 24,
+                elevation: 16,
+                style: TextStyle(color: Theme.of(context).primaryColorDark),
+                underline: Container(
+                height: 2,
+                color: Theme.of(context).primaryColorDark,
+                ),
+              onChanged: (String newValue) {
+              setState(() {
+                type = newValue;
+              });
+               },
+          items: <String>['General Physician' , 'Paediatrician' , 'Dermatologists' , 'Cardiologists']
+              .map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+           value: value,
+              child: Text(value),
+          );
+        }).toList(),
+       ),
+            ),
+              ],
+            ),
+              crossFadeState: _isDoctor != null && _isDoctor? CrossFadeState.showSecond : CrossFadeState.showFirst, 
+              duration: new Duration(seconds: 1),
+            ),
             Padding(
               padding: const EdgeInsets.fromLTRB(80.0 , 8.0 , 80.0 , 8.0),
               child: ClipRRect(
@@ -298,13 +366,13 @@ class _SignUpPageState extends State<SignUpPage> {
                     setState(() {
                       _loading = true;
                     });
-                    await new AuthService().signUp(_name, _email, _password, _isDoctor, gender);
+                    await new AuthService().signUp(_name, _email, _password, _isDoctor, gender, birthday);
                     setState(() {
                       _loading = false;
                     });
                   }
                   catch(e){
-                    _showErrorDialog(context);
+                    print(e);
                   }
                 }
                   },
@@ -321,7 +389,7 @@ class _SignUpPageState extends State<SignUpPage> {
               icon: Icon(Icons.add , color: Theme.of(context).primaryColorLight,), 
               label: Text('Log In',
                 style: Theme.of(context).textTheme.bodyText2,
-              )
+              ),
             ),
           ],
         ),
